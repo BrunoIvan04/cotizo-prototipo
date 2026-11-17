@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cotizo – Prototipo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="banner">Prototipo académico de Cotizo · Taller de Tecnologías de la Información (Tecmilenio) · Empresa y precios de ejemplo</div>
+<header>
+  <div class="brand">Coti<span>zo</span></div>
+  <p>Cotizador en línea para distribuidores de artículos promocionales</p>
+  <nav class="tabs" aria-label="Vistas del prototipo">
+    <a href="#cliente" id="t-cliente">Vista del cliente</a>
+    <a href="#panel" id="t-panel">Panel del distribuidor</a>
+    <a href="#planes" id="t-planes">Planes</a>
+  </nav>
+</header>
+
+<div id="view-cliente">
+<div class="shopbar"><strong>Promocionales Demo</strong> · Así ve el cotizador el cliente del distribuidor, dentro de su propio sitio web. Arma tu pedido y recibe tu cotización formal en menos de un minuto.</div>
+<main>
+  <div class="col">
+    <section class="step" aria-labelledby="s1">
+      <h2 id="s1"><b>1</b>Elige el producto</h2>
+      <div class="products" id="products"></div>
+    </section>
+
+    <section class="step" aria-labelledby="s2">
+      <h2 id="s2"><b>2</b>Cantidad y personalización</h2>
+      <div class="grid2">
+        <label for="qty">Cantidad de piezas <span class="hint">Mínimo 50 piezas</span>
+          <input id="qty" type="number" min="50" step="10" value="150" inputmode="numeric">
+        </label>
+        <label for="tech">Técnica de personalización
+          <select id="tech"></select>
+        </label>
+        <label for="inks"><span id="inksLabel">Número de tintas</span>
+          <select id="inks"><option>1</option><option>2</option><option>3</option><option>4</option></select>
+        </label>
+        <label for="pos">Posiciones de marcado <span class="hint">Ej. frente y reverso</span>
+          <select id="pos"><option value="1">1 posición</option><option value="2">2 posiciones</option></select>
+        </label>
+      </div>
+      <div>
+        <div style="font-size:13.5px;font-weight:500;margin-bottom:6px">Precio por volumen del producto</div>
+        <div class="tiers" id="tiers"></div>
+      </div>
+    </section>
+
+    <section class="step" aria-labelledby="s3">
+      <h2 id="s3"><b>3</b>Logotipo y entrega</h2>
+      <div class="logo-row">
+        <div class="mock" id="mock"><span>Vista previa de tu logo</span></div>
+        <label for="logo" style="flex:1;min-width:200px">Sube tu logotipo <span class="hint">PNG, JPG o SVG. Un diseñador lo revisa antes de producir.</span>
+          <input id="logo" type="file" accept="image/png,image/jpeg,image/svg+xml">
+        </label>
+      </div>
+      <div class="seg" role="radiogroup" aria-label="Tipo de entrega">
+        <label><input type="radio" name="ship" value="std" checked>Estándar · 10 días hábiles</label>
+        <label><input type="radio" name="ship" value="exp">Exprés · 5 días hábiles (+15%)</label>
+      </div>
+      <label for="dest">Destino de entrega
+        <select id="dest">
+          <option value="gdl">Zona metropolitana de Guadalajara (envío sin costo)</option>
+          <option value="nac">Resto de la República (paquetería)</option>
+        </select>
+      </label>
+    </section>
+
+    <section class="step" aria-labelledby="s4">
+      <h2 id="s4"><b>4</b>Datos de tu empresa</h2>
+      <div class="grid2">
+        <label for="company">Empresa<input id="company" autocomplete="organization" placeholder="Ej. Constructora Atlas"></label>
+        <label for="contact">Nombre de contacto<input id="contact" autocomplete="name" placeholder="Ej. Mariana López"></label>
+        <label for="email">Correo corporativo<input id="email" type="email" autocomplete="email" placeholder="compras@empresa.com"></label>
+        <label for="rfc">RFC <span class="hint">Opcional, para facturar</span><input id="rfc" maxlength="13" placeholder="XAXX010101000"></label>
+      </div>
+    </section>
+
+    <section id="quote" class="step" aria-labelledby="s5">
+      <h2 id="s5"><b>5</b>Tu cotización</h2>
+      <div class="qdoc" id="qdoc"></div>
+      <div class="notice" id="sent">Listo. Promocionales Demo recibió tu cotización y un asesor te contactará en menos de 2 horas hábiles. Ábrela en el <a href="#panel">Panel del distribuidor</a> para ver cómo le llega.</div>
+      <div class="actions">
+        <button class="btn" id="send" type="button">Enviar al distribuidor</button>
+        <button class="btn ghost" id="copy" type="button">Copiar resumen</button>
+        <button class="btn ghost" id="restart" type="button">Nueva cotización</button>
+      </div>
+      <div class="err" id="copyMsg" aria-live="polite"></div>
+    </section>
+  </div>
+
+  <aside aria-labelledby="sumh">
+    <h3 id="sumh">Resumen en tiempo real</h3>
+    <div class="unit"><span>Precio unitario</span><b id="unitP">$0.00</b></div>
+    <table class="sum"><tbody id="sumBody"></tbody></table>
+    <div class="meta" id="meta"></div>
+    <button class="btn" id="gen" type="button">Generar cotización formal</button>
+    <div class="err" id="err" aria-live="polite"></div>
+  </aside>
+</main>
+</div>
+
+<div id="view-panel" hidden>
+<main class="one">
+  <section class="step">
+    <h2>Resumen del mes · Promocionales Demo</h2>
+    <div><button class="btn ghost" id="reset" type="button">Restablecer datos de ejemplo</button></div>
+    <div class="kpis">
+      <div class="kpi"><span>Cotizaciones recibidas</span><b id="k-n">0</b></div>
+      <div class="kpi"><span>Valor cotizado (con IVA)</span><b id="k-v">$0</b></div>
+      <div class="kpi"><span>Ticket promedio</span><b id="k-t">$0</b></div>
+      <div class="kpi"><span>Producto más cotizado</span><b id="k-p">–</b></div>
+    </div>
+  </section>
+  <section class="step">
+    <h2>Cotizaciones recibidas</h2>
+    <div class="qtable"><table><thead><tr><th>Folio</th><th>Empresa</th><th>Producto</th><th class="n">Piezas</th><th class="n">Total</th><th>Estado</th></tr></thead><tbody id="qlist"></tbody></table></div>
+    <p class="hint2">Las filas marcadas como ejemplo vienen precargadas. Las que generes en la Vista del cliente aparecen arriba con estado Nueva. En la versión final cada una crea un trato en el CRM del distribuidor y le avisa por WhatsApp.</p>
+  </section>
+  <section class="step">
+    <h2>Lista de precios</h2>
+    <p class="hint2">El distribuidor actualiza sus precios por volumen aquí y el cotizador público cambia al instante. Prueba a editar uno y regresa a la Vista del cliente.</p>
+    <div class="qtable"><table><thead><tr><th>Producto</th><th class="n">50–99</th><th class="n">100–249</th><th class="n">250–499</th><th class="n">500+</th></tr></thead><tbody id="plist"></tbody></table></div>
+  </section>
+</main>
+</div>
+
+<div id="view-planes" hidden>
+<main class="one">
+  <section class="step">
+    <h2>Planes de Cotizo</h2>
+    <p class="hint2">Precios mensuales en MXN antes de IVA. Implementación única de $3,500: carga del catálogo, lista de precios y logotipo del distribuidor. Precios propuestos para validar en las entrevistas.</p>
+    <div class="plans">
+      <div class="plan"><h3>Emprendedor</h3><b>$790<small>/mes</small></b><ul><li>1 usuario</li><li>Hasta 150 productos</li><li>Cotizaciones ilimitadas en PDF</li><li>Cotizador para tu sitio web</li></ul></div>
+      <div class="plan main"><h3>Profesional</h3><b>$1,690<small>/mes</small></b><ul><li>3 usuarios</li><li>Catálogo ilimitado</li><li>Tu marca en el cotizador</li><li>Avisos por WhatsApp y conexión a CRM</li><li>Panel de métricas</li></ul></div>
+      <div class="plan"><h3>Empresa</h3><b>$3,490<small>/mes</small></b><ul><li>10 usuarios</li><li>Varias sucursales</li><li>API e integraciones a la medida</li><li>Soporte prioritario</li></ul></div>
+    </div>
+  </section>
+</main>
+</div>
+<footer>Prototipo de la Fase III · <a href="https://github.com/BrunoIvan04/cotizo-prototipo">Código en GitHub</a> · Bruno Ivan Santos Villarruel · Precios en MXN de ejemplo, antes de IVA salvo el total. Vigencia simulada de 15 días.</footer>
+
+<script src="js/app.js"></script>
+</body>
+</html>
